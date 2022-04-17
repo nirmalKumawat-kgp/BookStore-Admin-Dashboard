@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
+import { FormControl, TextField, MenuItem } from "@material-ui/core";
 import React from "react";
 import { Controller } from "react-hook-form";
 export default function FormSelect({ list, control, label, name }) {
@@ -16,12 +16,16 @@ export default function FormSelect({ list, control, label, name }) {
       name={name}
       control={control}
       render={({ field: { onChange, value } }) => (
-        <FormControl variant="outlined">
-          <InputLabel id="select-outlined">{label}</InputLabel>
-          <Select onChange={onChange} value={value}>
-            {generateSelectOptions()}
-          </Select>
-        </FormControl>
+        <TextField
+          value={value}
+          onChange={onChange}
+          select // tell TextField to render select
+          label={label}
+          variant={"outlined"}
+          style={{ width: "100%" }}
+        >
+          {generateSelectOptions()}
+        </TextField>
       )}
     />
   );

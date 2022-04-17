@@ -9,62 +9,60 @@ import {
   TextField,
 } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
-
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import BookEdit from "./BookEdit";
 import { getBookCategory } from "../utils/FetchData";
+import DeleteModal from "./DeleteModal";
 
-export default function BooksTable({ bookCategory }) {
+export default function BooksTable({ bookCategory, books }) {
   const [search, setSearch] = useState("");
-  const [books, setBooks] = useState([]);
   const [page, setPage] = useState(1);
-  // const [bookCategory, setBookCategory] = useState([]);
   const [edit, setEdit] = useState({ showEdit: false, rowIndex: null });
-  const [deleteBook, setDeleteBook] = useState(false);
+  const [deleteDialog, setDeleteDialog] = useState({
+    showDelete: false,
+    rowIndex: null,
+  });
   const [open, setOpen] = useState(true);
+
   const columns = [
     "Name",
     "Author",
     "Original Price",
     "Discount Price",
+    "Quantity",
     "Action",
   ];
 
-  // const fetchCategory = async () => {
-  //   const { data } = await axios.get(
-  //     "http://localhost:3006/api/books/getAllBookCategory"
-  //   );
-  //   setBookCategory(data);
-  // };
   const categories = getBookCategory();
   console.log(categories);
-  const fetchBooks = async () => {
-    const { data } = await axios.get(
-      "http://localhost:3006/api/books/getAllBooks"
-    );
-    console.log(data);
-    setBooks(data);
-  };
-
-  useEffect(() => {
-    fetchBooks();
-    // fetchCategory();
-  }, []);
 
   const handleSearch = () => {
     return books.filter((book) =>
       book.name.toLowerCase().includes(search.toLowerCase())
     );
   };
+
   const handleClose = () => {
     setOpen(false);
   };
+
   const handleEdit = (index) => {
     setEdit({ showEdit: true, rowIndex: index });
     setOpen(true);
   };
-  const handleDelete = () => {};
+
+  const handleDelete = (index) => {
+    setDeleteDialog({ showDelete: true, rowIndex: index });
+  };
+
+  const handleSave = () => {
+    setOpen(false);
+  };
+
+  const handleDeleteClose = () => {
+    setDeleteDialog({ showDelete: false, rowIndex: null });
+  };
 
   return (
     <Container style={{ textAlign: "center" }}>
@@ -93,13 +91,14 @@ export default function BooksTable({ bookCategory }) {
           </TableHead>
           <TableBody>
             {handleSearch()
-              .slice((page - 1) * 51, (page - 1) * 51 + 50)
+              .slice((page - 1) * 10, (page - 1) * 10 + 10)
               .map((book, index) => (
                 <TableRow>
                   <TableCell align="center">{book.name}</TableCell>
                   <TableCell align="right">{book.author}</TableCell>
                   <TableCell align="right">{book.originalPrice}</TableCell>
                   <TableCell align="right">{book.discountPrice}</TableCell>
+                  <TableCell align="right">{book.quantity}</TableCell>
                   <TableCell align="right">
                     <span
                       className="material-icons"
@@ -111,7 +110,7 @@ export default function BooksTable({ bookCategory }) {
                     <span
                       className="material-icons"
                       style={{ cursor: "pointer" }}
-                      onClick={() => handleDelete(book, index)}
+                      onClick={() => handleDelete(index)}
                     >
                       delete
                     </span>
@@ -121,8 +120,17 @@ export default function BooksTable({ bookCategory }) {
                         open={open}
                         bookCategory={bookCategory}
                         book={book}
+                        handleSave={handleSave}
                       />
                     )}
+                    {deleteDialog.showDelete &&
+                      deleteDialog.rowIndex === index && (
+                        <DeleteModal
+                          open={deleteDialog.showDelete}
+                          handleDeleteClose={handleDeleteClose}
+                          book={book}
+                        />
+                      )}
                   </TableCell>
                 </TableRow>
               ))}
@@ -136,7 +144,7 @@ export default function BooksTable({ bookCategory }) {
           display: "flex",
           justifyContent: "center",
         }}
-        count={parseInt((handleSearch()?.length / 50).toFixed(0))}
+        count={parseInt((handleSearch()?.length / 10).toFixed(0))}
         onChange={(_, value) => {
           setPage(value);
           window.scroll(0, 450);
