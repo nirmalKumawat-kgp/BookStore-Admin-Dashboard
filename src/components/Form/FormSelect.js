@@ -1,4 +1,4 @@
-import { FormControl, TextField, MenuItem } from "@material-ui/core";
+import { TextField, MenuItem } from "@material-ui/core";
 import React from "react";
 import { Controller } from "react-hook-form";
 export default function FormSelect({ list, control, label, name }) {
