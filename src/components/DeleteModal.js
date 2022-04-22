@@ -9,12 +9,14 @@ import {
 import axios from "axios";
 import React from "react";
 import API from "../baseUrl";
+import { useNavigate } from "react-router-dom";
 
 export default function DeleteModal({
   handleDeleteClose: handleClose,
   open,
   book,
 }) {
+  const navigate = useNavigate();
   const handleDelete = () => {
     const url = "books/delete/" + book.id;
     API.delete(url)
@@ -22,6 +24,7 @@ export default function DeleteModal({
         console.log(response);
         if (response.data.success) {
           handleClose();
+          navigate(0);
         }
       })
       .catch((error) => console.log(error));

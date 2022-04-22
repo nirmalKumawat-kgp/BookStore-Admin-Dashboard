@@ -1,10 +1,10 @@
-import { Button, CircularProgress, LinearProgress } from "@material-ui/core";
+import { Button, LinearProgress } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import BooksTable from "../components/BooksTable";
 import axios from "axios";
 import BookAdd from "../components/BookAdd";
 import API from "../baseUrl";
-export default function Users() {
+export default function Books() {
   const [open, setOpen] = useState(false);
   const [books, setBooks] = useState([]);
   const [bookCategory, setBookCategory] = useState([]);
