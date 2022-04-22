@@ -15,7 +15,7 @@ import { useForm } from "react-hook-form";
 import FormInput from "./Form/FormInput";
 import FormSelect from "./Form/FormSelect";
 import API from "../baseUrl";
-
+import { useNavigate } from "react-router-dom";
 export default function BookEdit({
   book,
   handleClose,
@@ -23,6 +23,7 @@ export default function BookEdit({
   bookCategory,
   handleSave,
 }) {
+  const navigate = useNavigate();
   const [IsDirty, setIsDirty] = useState(true);
   const [IsFile, setIsFile] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -76,6 +77,7 @@ export default function BookEdit({
             console.log(result.error);
           }
           setLoading(false);
+          navigate(0);
           handleSave();
         })
         .catch((error) => console.log(error));

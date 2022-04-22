@@ -23,7 +23,6 @@ export default function BookAdd({
   handleSave,
 }) {
   const [loading, setLoading] = useState(false);
-
   const [IsFile, setIsFile] = useState(false);
   const [fileName, setFileName] = useState("");
   const defaultValues = {

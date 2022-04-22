@@ -1,4 +1,4 @@
-import { Button } from "@material-ui/core";
+import { Button, CircularProgress, LinearProgress } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import BooksTable from "../components/BooksTable";
 import axios from "axios";
@@ -20,8 +20,10 @@ export default function Users() {
   };
   //For Add Button
   const handleSave = () => {
+    setLoading(true);
     setOpen(false);
     fetchBooks();
+    setLoading(false);
   };
   //For Add Button
   const handleClose = () => setOpen(false);
@@ -48,7 +50,11 @@ export default function Users() {
         )}
       </div>
       <div style={{ marginTop: "1rem" }}>
-        <BooksTable bookCategory={bookCategory} books={books} />
+        {loading ? (
+          <LinearProgress />
+        ) : (
+          <BooksTable bookCategory={bookCategory} books={books} />
+        )}
       </div>
     </div>
   );
