@@ -8,6 +8,7 @@ import {
 } from "@material-ui/core";
 import axios from "axios";
 import React from "react";
+import API from "../baseUrl";
 
 export default function DeleteModal({
   handleDeleteClose: handleClose,
@@ -15,9 +16,8 @@ export default function DeleteModal({
   book,
 }) {
   const handleDelete = () => {
-    const url = "http://localhost:3006/api/books/delete/" + book.id;
-    axios
-      .delete(url)
+    const url = "books/delete/" + book.id;
+    API.delete(url)
       .then((response) => {
         console.log(response);
         if (response.data.success) {
