@@ -10,11 +10,11 @@ import {
   Typography,
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
-import axios from "axios";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import FormInput from "./Form/FormInput";
 import FormSelect from "./Form/FormSelect";
+import API from "../baseUrl";
 
 export default function BookEdit({
   book,
@@ -57,7 +57,7 @@ export default function BookEdit({
     if (isDirty) {
       setLoading(true);
 
-      const url = "http://localhost:3006/api/books/update/" + book.id;
+      const url = "books/update/" + book.id;
       const formData = new FormData();
 
       for (let eachField in dirtyFields) {
@@ -69,8 +69,7 @@ export default function BookEdit({
       };
       console.log(formData);
       let result;
-      axios
-        .put(url, formData, config)
+      API.put(url, formData, config)
         .then((response) => {
           result = response.data;
           if (!result.success) {

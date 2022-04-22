@@ -10,11 +10,11 @@ import {
   Typography,
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
-import axios from "axios";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import FormInput from "./Form/FormInput";
 import FormSelect from "./Form/FormSelect";
+import API from "../baseUrl";
 
 export default function BookAdd({
   handleClose,
@@ -48,7 +48,7 @@ export default function BookAdd({
 
   const onSubmit = (data) => {
     setLoading(true);
-    const url = "http://localhost:3006/api/books/addBook";
+    const url = "books/addBook";
     const formData = new FormData();
 
     formData.append("bookImage", data.file[0]);
@@ -62,8 +62,7 @@ export default function BookAdd({
       headers: { "content-type": "multipart/form-data" },
     };
     let result;
-    axios
-      .post(url, formData, config)
+    API.post(url, formData, config)
       .then((response) => {
         result = response.data;
         if (!result.success) {
