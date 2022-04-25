@@ -2,10 +2,11 @@ import { TextField, MenuItem } from "@material-ui/core";
 import React from "react";
 import { Controller } from "react-hook-form";
 export default function FormSelect({ list, control, label, name }) {
+  console.log(list);
   const generateSelectOptions = () => {
     return list.map((option) => {
       return (
-        <MenuItem key={option.name} value={option.name}>
+        <MenuItem key={option.name} value={option.id}>
           {option.name}
         </MenuItem>
       );

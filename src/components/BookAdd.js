@@ -30,7 +30,7 @@ export default function BookAdd({
     author: "",
     discountPrice: "",
     originalPrice: "",
-    category: "",
+    BookCategoryId: 1,
     quantity: 0,
   };
 
@@ -49,14 +49,14 @@ export default function BookAdd({
     setLoading(true);
     const url = "books/addBook";
     const formData = new FormData();
-
+    console.log(data);
     formData.append("bookImage", data.file[0]);
     formData.append("name", data.name);
     formData.append("author", data.author);
     formData.append("discountPrice", data.discountPrice);
     formData.append("originalPrice", data.originalPrice);
     formData.append("quantity", data.quantity);
-    formData.append("BookCategoryId", 1);
+    formData.append("BookCategoryId", data.BookCategoryId);
     const config = {
       headers: { "content-type": "multipart/form-data" },
     };
@@ -143,7 +143,7 @@ export default function BookAdd({
               list={bookCategory}
               control={control}
               label="Category"
-              name="category"
+              name="BookCategoryId"
             />
           </Grid>
           <Grid item xs={6}>

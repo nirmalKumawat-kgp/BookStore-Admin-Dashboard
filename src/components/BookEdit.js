@@ -35,7 +35,7 @@ export default function BookEdit({
     author: book.author,
     discountPrice: book.discountPrice,
     originalPrice: book.originalPrice,
-    category: book.category ? book.category : "",
+    BookCategoryId: book.BookCategoryId ? book.BookCategoryId : "",
     quantity: book.quantity,
   };
 
@@ -49,7 +49,7 @@ export default function BookEdit({
     defaultValues: defaultValues,
     mode: "onBlur",
   });
-
+  console.log(dirtyFields);
   const onSubmit = (data) => {
     if (!isDirty) {
       setIsDirty(false);
@@ -62,13 +62,16 @@ export default function BookEdit({
       const formData = new FormData();
 
       for (let eachField in dirtyFields) {
-        formData.append(eachField, data[eachField]);
+        if (eachField !== "file") {
+          formData.append(eachField, data[eachField]);
+        } else {
+          formData.append("isImageChanged", true);
+          formData.append("bookImage", data.file[0]);
+        }
       }
-
       const config = {
         headers: { "content-type": "multipart/form-data" },
       };
-      console.log(formData);
       let result;
       API.put(url, formData, config)
         .then((response) => {
@@ -156,7 +159,7 @@ export default function BookEdit({
               list={bookCategory}
               control={control}
               label="Category"
-              name="category"
+              name="BookCategoryId"
             />
           </Grid>
           <Grid item xs={6}>
